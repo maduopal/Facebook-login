@@ -1,283 +1,109 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Login — Social</title>
-  <style>
-    /* Reset + base */
-    * { box-sizing: border-box; }
-    html,body { height:100%; margin:0; font-family: "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial; color:#1c1e21; background: linear-gradient(180deg,#1877f2 0%, #3b82f6 100%); }
-    a { color: inherit; text-decoration: none; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Sci-Fi Login</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 
-    /* Page layout */
-    .wrap {
-      min-height:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:28px;
-      gap:32px;
-      flex-wrap:wrap;
-    }
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(120deg, #0f0c29, #302b63, #24243e);
+    font-family: 'Orbitron', sans-serif;
+    overflow: hidden;
+  }
 
-    /* Left: big title/graphic */
-    .hero {
-      color:white;
-      max-width:520px;
-      flex:1 1 380px;
-      text-align:left;
-    }
-    .logo-sim {
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin-bottom:18px;
-    }
-    .logo-sim .badge {
-      width:56px; height:56px; border-radius:12px;
-      background: radial-gradient(circle at 30% 25%, #fff6, #ffffff00 50%), #ffffff22;
-      display:flex; align-items:center; justify-content:center;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.12), inset 0 -2px 4px rgba(255,255,255,0.03);
-      backdrop-filter: blur(2px);
-    }
-    .logo-sim svg{ width:34px; height:34px; fill:white; opacity:0.95; transform:translateX(-2px); }
-    .hero h1 { font-size:36px; margin:8px 0 8px; line-height:1.05; font-weight:700; }
-    .hero p { margin:0; opacity:0.95; font-size:16px; }
+  /* Floating particles */
+  .particle {
+    position: absolute;
+    background: rgba(0,255,255,0.7);
+    border-radius: 50%;
+    animation: float 6s linear infinite;
+  }
 
-    /* Right: card form */
-    .card {
-      width:380px;
-      max-width:92%;
-      background: linear-gradient(180deg, rgba(255,255,255,0.995), rgba(255,255,255,0.985));
-      border-radius:12px;
-      padding:20px;
-      box-shadow: 0 10px 30px rgba(2,6,23,0.18);
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
+  @keyframes float {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-50px) rotate(180deg); }
+    100% { transform: translateY(0) rotate(360deg); }
+  }
 
-    .card .title { font-weight:700; font-size:20px; color:#050505; text-align:center; }
-    
-    .input {
-      display:flex; gap:10px; align-items:center;
-      border-radius:8px;
-      padding:10px 12px;
-      border:1px solid #e6e9ee;
-      background:#fff;
-      transition: box-shadow .18s, border-color .18s, transform .12s;
-    }
-    .input:focus-within { box-shadow: 0 6px 18px rgba(24,119,242,0.12); border-color:#cde4ff; transform:translateY(-1px); }
-    .input svg{ width:18px; height:18px; opacity:0.56; }
-    .input input {
-      border:0; outline:0; flex:1 1 auto; font-size:15px; background:transparent;
-    }
-    .small { font-size:13px; color:#606770; text-align:center; padding:6px 4px; }
+  .login-box {
+    background: rgba(0,0,0,0.5);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px #00fff7, 0 0 40px #00fff7;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: glowBox 2s infinite alternate;
+  }
 
-    .btn {
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:11px 14px;
-      border-radius:8px;
-      cursor:pointer;
-      border:0;
-      font-weight:700;
-      font-size:15px;
-      box-shadow: 0 6px 12px rgba(3,98,214,0.12);
-    }
-    .btn-primary {
-      background: linear-gradient(180deg,#1877f2,#155fc4);
-      color:white;
-    }
-    .btn-secondary {
-      background:transparent;
-      color:#1877f2;
-      border:1px solid transparent;
-      padding:10px 12px;
-      font-weight:600;
-    }
+  @keyframes glowBox {
+    from { box-shadow: 0 0 20px #00fff7, 0 0 40px #00fff7; }
+    to { box-shadow: 0 0 40px #ff00ff, 0 0 80px #ff00ff; }
+  }
 
-    .actions { display:flex; flex-direction:column; gap:10px; align-items:center; }
-    .links { display:flex; justify-content:space-between; width:100%; font-size:13px; color:#1877f2; }
-    .sep { height:1px; width:100%; background:linear-gradient(90deg, #eee, #f6f7fb); margin:6px 0; }
+  .login-box h2 {
+    color: #00fff7;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px #00fff7;
+  }
 
-    /* Create account box */
-    .create {
-      margin-top:6px;
-      background:linear-gradient(180deg,#f5f7fb,#fff);
-      padding:12px;
-      border-radius:8px;
-      text-align:center;
-      border:1px solid #eef2ff;
-      font-weight:700;
-      color:#1c1e21;
-    }
+  .login-box input {
+    width: 250px;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    background: rgba(255,255,255,0.05);
+    color: #00fff7;
+    font-size: 16px;
+    text-align: center;
+    transition: 0.3s;
+  }
 
-    /* Responsive tweak */
-    @media (max-width:880px){
-      .wrap{ padding:18px; gap:16px; }
-      .hero { text-align:center; }
-      .logo-sim { justify-content:center; }
-      .card { width:100%; max-width:520px; }
-    }
+  .login-box input:focus {
+    background: rgba(255,255,255,0.1);
+    box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+  }
 
-    /* minor effects for invalid login attempt */
-    .shake {
-      animation: shake .45s;
-    }
-    @keyframes shake {
-      10%, 90% { transform: translateX(-1px); }
-      20%, 80% { transform: translateX(6px); }
-      30%, 50%, 70% { transform: translateX(-8px); }
-      40%, 60% { transform: translateX(8px); }
-    }
+  .login-box button {
+    margin-top: 20px;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 10px;
+    background: #00fff7;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7;
+  }
 
-    /* subtle link style */
-    .link-muted { color:#606770; font-size:13px; }
-  </style>
+  .login-box button:hover {
+    background: #ff00ff;
+    box-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff;
+    transform: scale(1.1);
+  }
+</style>
 </head>
 <body>
-  <div class="wrap" role="main">
-    <div class="hero" aria-hidden="false">
-      <div class="logo-sim" aria-hidden="true">
-        <div class="badge" title="Social">
-          <!-- simple generic mark -->
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 2C7 2 4 5.5 4 10v4a2 2 0 0 0 2 2h3v5l5-3h3a2 2 0 0 0 2-2v-4c0-4.5-3-8-8-8z"/>
-          </svg>
-        </div>
-        <div style="color:white;">
-          <div style="font-weight:700; font-size:18px;">Social</div>
-          <div style="opacity:0.9; font-size:13px;">Connect with people & communities</div>
-        </div>
-      </div>
 
-      <h1>Masuk ke Social</h1>
-      <p>Terhubung dengan teman, berbagi update, dan jelajahi komunitas kamu. Halaman ini dibuat untuk lomba — cepat, ringan, dan responsive.</p>
-    </div>
+<div class="login-box">
+  <h2>Login Portal</h2>
+  <input type="text" placeholder="Email atau Username">
+  <input type="password" placeholder="Password">
+  <button>Masuk</button>
+</div>
 
-    <form class="card" id="loginCard" onsubmit="event.preventDefault(); tryLogin();">
-      <div class="title">Masuk</div>
-
-      <div class="input" id="emailWrap">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2h15A2.5 2.5 0 0 1 22 4.5v15a2.5 2.5 0 0 1-2.5 2.5H4.5A2.5 2.5 0 0 1 2 19.5v-15zM4 6v.01L12 11l8-4.99V6L12 10 4 6z"/></svg>
-        <input id="email" type="email" placeholder="Email atau telepon" autocomplete="username" required aria-label="Email atau telepon">
-      </div>
-
-      <div class="input" id="passWrap">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 8V7a5 5 0 1 0-10 0v1H5v11h14V8h-2zM9 7a3 3 0 0 1 6 0v1H9V7z"/></svg>
-        <input id="password" type="password" placeholder="Kata sandi" autocomplete="current-password" required aria-label="Kata sandi">
-      </div>
-
-      <div class="links" style="margin-top:4px; margin-bottom:4px;">
-        <label class="link-muted" style="display:flex;align-items:center;gap:6px;">
-          <input id="remember" type="checkbox" style="transform:scale(1.02)"/> Ingat saya
-        </label>
-        <a href="#" onclick="forgot(); return false;">Lupa kata sandi?</a>
-      </div>
-
-      <div class="actions">
-        <button class="btn btn-primary" type="submit" aria-label="Masuk">Masuk</button>
-        <div class="sep" role="separator" aria-hidden="true"></div>
-        <div class="create" role="button" tabindex="0" onclick="createAccount()">Buat akun baru</div>
-      </div>
-    </form>
-  </div>
-
-  <script>
-    // Demo-only "login" logic for visual effect
-    const CORRECT = { email: "demo@demo.com", pass: "password123" }; // change for demo
-
-    function tryLogin(){
-      const e = document.getElementById('email'), p = document.getElementById('password');
-      const wrap = document.getElementById('loginCard');
-      const em = e.value.trim(), pw = p.value;
-
-      // basic validation
-      if(!em || !pw){
-        doShake(wrap);
-        toast("Isi email dan kata sandi dulu.");
-        return;
-      }
-
-      // fake auth: if matches CORRECT -> success animation
-      if(em.toLowerCase() === CORRECT.email && pw === CORRECT.pass){
-        // success: show small friendly overlay and redirect after tiny pause (simulate)
-        successAnimation(wrap);
-        setTimeout(()=> {
-          toast("Berhasil masuk — selamat! (demo)");
-          // in real use, submit form to server here
-        }, 650);
-      } else {
-        // wrong: highlight & shake
-        doShake(wrap);
-        toast("Email atau kata sandi salah.");
-      }
-    }
-
-    function doShake(el){
-      el.classList.remove('shake');
-      void el.offsetWidth; // reflow
-      el.classList.add('shake');
-    }
-
-    // minimal toast
-    function toast(txt){
-      let t = document.getElementById('toastBox');
-      if(!t){
-        t = document.createElement('div');
-        t.id='toastBox';
-        t.style.position='fixed';
-        t.style.left='50%';
-        t.style.bottom='28px';
-        t.style.transform='translateX(-50%)';
-        t.style.background='rgba(0,0,0,0.78)';
-        t.style.color='#fff';
-        t.style.padding='10px 14px';
-        t.style.borderRadius='8px';
-        t.style.fontSize='14px';
-        t.style.zIndex='9999';
-        document.body.appendChild(t);
-      }
-      t.textContent = txt;
-      t.style.opacity = 1;
-      clearTimeout(t._h);
-      t._h = setTimeout(()=>{ t.style.transition='opacity .5s'; t.style.opacity=0; }, 2200);
-    }
-
-    function successAnimation(el){
-      el.style.transformOrigin='center';
-      el.animate([
-        { transform: 'scale(1)', boxShadow: '0 10px 30px rgba(2,6,23,0.18)' },
-        { transform: 'scale(0.985)', boxShadow: '0 18px 40px rgba(2,6,23,0.12)' },
-        { transform: 'scale(1)', boxShadow: '0 10px 30px rgba(2,6,23,0.18)' }
-      ], { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)'});
-    }
-
-    // small helpers
-    function forgot(){
-      toast("Fitur lupa sandi (demo): buka recovery email / nomor telepon.");
-    }
-    function createAccount(){
-      toast("Buat akun: arahkan ke pendaftaran (demo).");
-    }
-
-    // Accessibility: allow Enter to submit; focus outlines handled by browser
-    document.addEventListener('keydown', (e)=>{
-      if(e.key === 'Enter' && (document.activeElement.tagName === 'INPUT')) {
-        // let form handle via onsubmit
-      }
-    });
-
-    // For testing convenience: prefill demo creds on double-click of badge
-    document.querySelector('.badge').addEventListener('dblclick', ()=>{
-      document.getElementById('email').value = CORRECT.email;
-      document.getElementById('password').value = CORRECT.pass;
-      toast("Demo creds diisi.");
-    });
-  </script>
-</body>
-</html>
+<script>
+  // Buat particle neon floating
+  const numParticles = 50;
+  for(le
